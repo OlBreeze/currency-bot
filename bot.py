@@ -46,7 +46,7 @@ if not GEMINI_API_KEY:
 else:
     # Настройка Gemini AI
     genai.configure(api_key=GEMINI_API_KEY)
-    ai_model = genai.GenerativeModel('models/gemini-2.5-flash')
+    ai_model = genai.GenerativeModel('gemini-2.5-flash')
     AI_ENABLED = True
     logger.info("Gemini AI инициализирован")
 
