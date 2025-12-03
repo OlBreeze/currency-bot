@@ -128,9 +128,34 @@ def ask_ai(question, user_context=None):
         logger.info("AI ответ получен")
         return answer
 
+
     except Exception as e:
-        logger.error(f"Ошибка AI: {e}")
-        return f"❌ Ошибка AI: {str(e)}"
+
+        error_message = str(e)
+
+        logger.error(f"Ошибка AI: {error_message}")
+
+        # Обработка разных типов ошибок
+
+        if "429" in error_message or "quota" in error_message.lower():
+            return """❌ <b>Превышен лимит запросов к AI</b>
+   <b>Что делать:</b>
+   1. Подождите 1-2 минуты
+   2. Попробуйте снова
+   3. Или используйте обмен валют без AI
+
+   <i>Лимиты обновляются каждую минуту</i>"""
+
+        elif "invalid" in error_message.lower() or "api key" in error_message.lower():
+            return """❌ <b>Проблема с API ключом</b>"""
+
+        elif "timeout" in error_message.lower():
+            return """❌ <b>Превышено время ожидания</b>"""
+
+        else:
+            return f"""❌ <b>Ошибка AI сервиса</b>
+   Произошла непредвиденная ошибка.
+   <i>Ошибка записана в лог</i>"""
 
 
 def create_currency_keyboard():
